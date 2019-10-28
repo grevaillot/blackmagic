@@ -382,7 +382,7 @@ bool samd_probe(target *t)
 	uint32_t cid = samd_read_cid(t);
 	uint32_t pid = samd_read_pid(t);
 
-	/* Check the ARM Coresight Component and Perhiperal IDs */
+	/* Check the ARM Coresight Component and Peripheral IDs */
 	if ((cid != SAMD_CID_VALUE) ||
 	    ((pid & SAMD_PID_MASK) != SAMD_PID_CONST_VALUE))
 		return false;
