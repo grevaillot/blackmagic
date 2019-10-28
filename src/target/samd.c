@@ -326,8 +326,30 @@ struct samd_descr samd_parse_device_id(uint32_t did)
 		default: samd.family = '?'; break;
 	}
 
+	/* fixup family for special devices */
+	if ((samd.family == 'L') && (devsel >> 4))
+		samd.family = 'R';
+
 	/* Series */
 	switch (family) {
+		case 'R':
+			switch (devsel >> 4) {
+				case 0x1e:
+				case 0x1f:
+					samd.series = 30;
+					break;
+				case 0x28:
+				case 0x29:
+				case 0x2a:
+					samd.series = 34;
+					break;
+				case 0x2b:
+				case 0x2c:
+				case 0x2d:
+					samd.series = 35;
+					break;
+			}
+			break;
 		case 'L':
 			switch (series) {
 				case 1: samd.series = 21; break;
