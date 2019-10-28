@@ -129,7 +129,7 @@ const struct command_s samd_cmd_list[] = {
 #define SAMD_STATUSB_PROT		(1 << 16)
 
 /* Device Identification Register (DID) */
-#define SAMD_DID_MASK			0xFFBC0000
+#define SAMD_DID_MASK			0xFF0C0000
 #define SAMD_DID_CONST_VALUE		0x10000000
 #define SAMD_DID_DEVSEL_MASK		0x0F
 #define SAMD_DID_DEVSEL_POS		0
