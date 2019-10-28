@@ -327,12 +327,24 @@ struct samd_descr samd_parse_device_id(uint32_t did)
 	}
 
 	/* Series */
-	switch (series) {
-		case 0: samd.series = 20; break;
-		case 1: samd.series = 21; break;
-		case 2: samd.series = 10; break;
-		case 3: samd.series = 11; break;
+	switch (family) {
+		case 'L':
+			switch (series) {
+				case 1: samd.series = 21; break;
+				case 2: samd.series = 22; break;
+			}
+			break;
+		default:
+			switch (series) {
+				case 0: samd.series = 20; break;
+				case 1: samd.series = 21; break;
+				case 2: samd.series = 10; break;
+				case 3: samd.series = 11; break;
+				case 4: samd.series = 9; break;
+			}
+			break;
 	}
+
 	/* Revision */
 	samd.revision = 'A' + revision;
 
