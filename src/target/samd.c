@@ -372,14 +372,15 @@ struct samd_descr samd_parse_device_id(uint32_t did)
 
 	switch (samd.series) {
 	case 20: /* SAM D20 */
-	case 21: /* SAM D21 */
-		switch (devsel / 5) {
+	case 21: /* SAM D21/L21 */
+		/* XXX fixme for R */
+		switch ((devsel & 0xf) / 5) {
 			case 0: samd.pin = 'J'; break;
 			case 1: samd.pin = 'G'; break;
 			case 2: samd.pin = 'E'; break;
 			default: samd.pin = 'u'; break;
 		}
-		samd.mem = 18 - (devsel % 5);
+		samd.mem = 18 - ((devsel & 0xf) % 5);
 		break;
 	case 10: /* SAM D10 */
 	case 11: /* SAM D11 */
