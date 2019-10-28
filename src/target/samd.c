@@ -137,6 +137,8 @@ const struct command_s samd_cmd_list[] = {
 #define SAMD_DID_REVISION_POS		8
 #define SAMD_DID_SERIES_MASK		0x03
 #define SAMD_DID_SERIES_POS		16
+#define SAMD_DID_FAMILY_MASK		0x1f
+#define SAMD_DID_FAMILY_POS		23
 
 /* Peripheral ID */
 #define SAMD_PID_MASK			0x00F7FFFF
@@ -293,6 +295,7 @@ static bool samd_protected_attach(target *t)
  * describing the SAM D device.
  */
 struct samd_descr {
+	char family;
 	uint8_t series;
 	char revision;
 	char pin;
@@ -304,12 +307,22 @@ struct samd_descr samd_parse_device_id(uint32_t did)
 	struct samd_descr samd;
 	memset(samd.package, 0, 3);
 
+	uint8_t family = (did >> SAMD_DID_FAMILY_POS)
+	  & SAMD_DID_FAMILY_MASK;
 	uint8_t series = (did >> SAMD_DID_SERIES_POS)
 	  & SAMD_DID_SERIES_MASK;
 	uint8_t revision = (did >> SAMD_DID_REVISION_POS)
 	  & SAMD_DID_REVISION_MASK;
 	uint8_t devsel = (did >> SAMD_DID_DEVSEL_POS)
 	  & SAMD_DID_DEVSEL_MASK;
+
+	/* Series */
+	switch (family) {
+		case 0: samd.family = 'D'; break;
+		case 1: samd.family = 'L'; break;
+		case 2: samd.family = 'C'; break;
+		default: samd.family = '?'; break;
+	}
 
 	/* Series */
 	switch (series) {
@@ -390,13 +403,13 @@ bool samd_probe(target *t)
 	/* Part String */
 	if (protected) {
 		snprintf(variant_string, sizeof(variant_string),
-		         "Atmel SAMD%d%c%dA%s (rev %c) (PROT=1)",
-		         samd.series, samd.pin, samd.mem,
+		         "Atmel SAM%c%d%c%dA%s (rev %c) (PROT=1)",
+		         samd.family, samd.series, samd.pin, samd.mem,
 		         samd.package, samd.revision);
 	} else {
 		snprintf(variant_string, sizeof(variant_string),
-		         "Atmel SAMD%d%c%dA%s (rev %c)",
-		         samd.series, samd.pin, samd.mem,
+		         "Atmel SAM%c%d%c%dA%s (rev %c)",
+		         samd.family, samd.series, samd.pin, samd.mem,
 		         samd.package, samd.revision);
 	}
 
