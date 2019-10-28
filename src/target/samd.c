@@ -318,7 +318,7 @@ struct samd_descr samd_parse_device_id(uint32_t did)
 	uint8_t devsel = (did >> SAMD_DID_DEVSEL_POS)
 	  & SAMD_DID_DEVSEL_MASK;
 
-	/* Series */
+	/* Family */
 	switch (family) {
 		case 0: samd.family = 'D'; break;
 		case 1: samd.family = 'L'; break;
