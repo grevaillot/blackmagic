@@ -3,6 +3,7 @@ blackmagic
 *.bin
 *.hex
 blackmagic_dfu
+blackmagic_stlinkv2
 dfu_upgrade
 mapfile
 *.o
